@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أمــاني الذِّئــب | Los deseos del Lupo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Naskh+Arabic:wght@300;400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --deep: #0d0d0f;
+    --card: #111115;
+    --border: #1e1e24;
+    --gold: #b8943a;
+    --gold-light: #d4af6a;
+    --red: #8b1a1a;
+    --red-glow: #c0392b;
+    --white: #e8e4dc;
+    --muted: #7a7570;
+    --smoke: rgba(184,148,58,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Cormorant Garamond', 'Noto Naskh Arabic', serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 2px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(139,26,26,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(184,148,58,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 20% 60%, rgba(139,26,26,0.06) 0%, transparent 50%);
+  }
+
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(184,148,58,0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(184,148,58,0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  .smoke-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,148,58,0.08) 0%, transparent 70%);
+    animation: drift linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes drift {
+    0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-20vh) translateX(40px) scale(1.5); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+    animation: fadeUp 1.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-title-ar {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--white) 0%, var(--gold-light) 50%, var(--white) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    animation: fadeUp 1.4s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-divider {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 1.5rem auto;
+    animation: fadeUp 1.4s 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-title-fr {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 3vw, 1.6rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    opacity: 0.7;
+    animation: fadeUp 1.4s 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-desc {
+    margin-top: 2.5rem;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    line-height: 1.9;
+    color: var(--muted);
+    max-width: 520px;
+    font-style: italic;
+    animation: fadeUp 1.4s 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    animation: fadeUp 1.4s 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(184,148,58,0.3);
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    animation: fadeUp 1.4s 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .btn-read {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--black);
+    background: var(--gold);
+    padding: 1rem 2.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .btn-read::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--red-glow);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+
+  .btn-read:hover::before { transform: translateX(0); }
+  .btn-read:hover { color: var(--white); }
+  .btn-read span { position: relative; z-index: 1; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.4;
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-hint span {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ===== SECTIONS ===== */
+  section {
+    padding: 8rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(184,148,58,0.4), transparent);
+  }
+
+  .section-title {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .section-title-fr {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-style: italic;
+    color: var(--gold-light);
+    opacity: 0.6;
+    margin-bottom: 3rem;
+  }
+
+  /* ===== SYNOPSIS ===== */
+  .synopsis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .synopsis-divider {
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    height: 100%;
+    min-height: 200px;
+  }
+
+  .synopsis-text {
+    font-size: 1.1rem;
+    line-height: 2;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .synopsis-text.ar { text-align: right; font-family: 'Noto Naskh Arabic', serif; }
+  .synopsis-text.fr { text-align: left; direction: ltr; }
+
+  /* ===== CHARACTERS ===== */
+  .characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .character-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: default;
+  }
+
+  .character-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .character-card:hover::before { transform: scaleX(1); }
+
+  .character-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(184,148,58,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .character-card:hover::after { opacity: 1; }
+
+  .char-number {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    opacity: 0.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .char-name-ar {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 0.3rem;
+    direction: rtl;
+  }
+
+  .char-name-fr {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--gold-light);
+    opacity: 0.6;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+  }
+
+  .char-desc {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .char-trait {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--red-glow);
+    border: 1px solid rgba(192,57,43,0.3);
+    padding: 0.3rem 0.7rem;
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  /* ===== EXTRAITS ===== */
+  .extraits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .extrait-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 2rem;
+    align-items: start;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  .extrait-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .extrait-num {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--border);
+    line-height: 1;
+    padding-top: 0.3rem;
+  }
+
+  .extrait-quote {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 1.3rem;
+    line-height: 2;
+    font-style: italic;
+    color: var(--white);
+    opacity: 0.85;
+    direction: rtl;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-right: 1.5rem;
+  }
+
+  .extrait-quote::before {
+    content: '"';
+    position: absolute;
+    right: 0;
+    top: -0.5rem;
+    font-size: 3rem;
+    color: var(--gold);
+    opacity: 0.3;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .extrait-source {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+
+  /* ===== CTA SECTION ===== */
+  .cta-section {
+    text-align: center;
+    padding: 8rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 50%, rgba(139,26,26,0.12) 0%, transparent 70%);
+  }
+
+  .cta-section .section-title { text-align: center; }
+
+  .cta-border {
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem auto;
+    opacity: 0.5;
+  }
+
+  .cta-text {
+    font-size: 1rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 3rem;
+    direction: rtl;
+    font-family: 'Noto Naskh Arabic', serif;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+
+  .footer-copy {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.9), transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-logo {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .synopsis-grid { grid-template-columns: 1fr; }
+    .synopsis-divider { display: none; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .extrait-item { grid-template-columns: 1fr; }
+    .extrait-num { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">أمــاني الذِّئــب</div>
+  <ul class="nav-links">
+    <li><a href="#synopsis">القصة</a></li>
+    <li><a href="#characters">الشخصيات</a></li>
+    <li><a href="#extraits">مقتطفات</a></li>
+    <li><a href="#read">اقرأ</a></li>
+    <li><a href="https://www.instagram.com/wattp__mina24" target="_blank">Instagram</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+
+  <!-- Smoke particles -->
+  <div class="smoke-particle" style="width:300px;height:300px;left:10%;animation-duration:12s;animation-delay:0s;"></div>
+  <div class="smoke-particle" style="width:200px;height:200px;left:70%;animation-duration:15s;animation-delay:3s;"></div>
+  <div class="smoke-particle" style="width:150px;height:150px;left:40%;animation-duration:10s;animation-delay:6s;"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">Wattpad · رواية مغربية</div>
+    <div class="hero-title-ar">أمــاني الذِّئــب</div>
+    <div class="hero-divider"></div>
+    <div class="hero-title-fr">Los deseos del Lupo</div>
+    <p class="hero-desc">
+      بين عالم المافيا والذنب المدفون، تجد أماني نفسها في مواجهة رجل لا قلب له...
+      أو هكذا ظنت.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">مغربية</span>
+      <span class="tag">مافيا</span>
+      <span class="tag">رومانسية</span>
+      <span class="tag">الذنب</span>
+    </div>
+    <div class="hero-cta">
+      <a href="https://www.wattpad.com/story/398716838?utm_source=ios&utm_medium=link&utm_content=story_info&wp_page=story_details&wp_uname=mina__myss" target="_blank" class="btn-read">
+        <span>📖 اقرأ الآن · Lire maintenant</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- SYNOPSIS -->
+<section id="synopsis">
+  <div class="section-label">القصة · Synopsis</div>
+  <div class="section-title">عن ماذا تحكي؟</div>
+  <div class="section-title-fr">De quoi parle cette histoire ?</div>
+
+  <div class="synopsis-grid">
+    <div class="synopsis-text ar">
+      أماني، فتاة مغربية عادية، تجد نفسها فجأة في قلب عالم لم تختره أبداً.
+      عالم المافيا، الأسرار، والدماء.
+      ورجل واحد فقط يقف بينها وبين الحقيقة —
+      رجل يحمل من الذنب ما يكفي لإغراق مدينة بأكملها.
+      <br><br>
+      واش الحب يقدر يبقى في عالم بني على الخيانة؟
+    </div>
+    <div class="synopsis-divider"></div>
+    <div class="synopsis-text fr" style="direction:ltr; text-align:left;">
+      Amani, une jeune marocaine ordinaire, se retrouve plongée dans un monde qu'elle n'a jamais choisi.
+      Le monde de la mafia, des secrets et du sang.
+      Un seul homme se tient entre elle et la vérité —
+      un homme qui porte assez de culpabilité pour noyer une ville entière.
+      <br><br>
+      L'amour peut-il survivre dans un monde bâti sur la trahison ?
+    </div>
+  </div>
+</section>
+
+<!-- CHARACTERS -->
+<section id="characters">
+  <div class="section-label">الشخصيات · Personnages</div>
+  <div class="section-title">من هم؟</div>
+  <div class="section-title-fr">Qui sont-ils ?</div>
+
+  <div class="characters-grid">
+    <div class="character-card">
+      <div class="char-number">01 · البطلة</div>
+      <div class="char-name-ar">أماني</div>
+      <div class="char-name-fr">Amani · L'héroïne</div>
+      <p class="char-desc">
+        فتاة مغربية قوية من الخارج، هشة من الداخل.
+        تحمل أسراراً من الماضي لم تخبر بها أحداً.
+        تحاول أن تعيش حياة عادية... لكن القدر له رأي آخر.
+      </p>
+      <span class="char-trait">قوية · Forte</span>
+    </div>
+
+    <div class="character-card">
+      <div class="char-number">02 · البطل</div>
+      <div class="char-name-ar">رجل المافيا</div>
+      <div class="char-name-fr">L'homme de la Mafia</div>
+      <p class="char-desc">
+        باردٌ كالجليد، خطيرٌ كالنار.
+        لا يؤمن بالحب ولا بالرحمة —
+        حتى جاءت هي وقلبت كل شيء رأساً على عقب.
+      </p>
+      <span class="char-trait">خطير · Dangereux</span>
+    </div>
+
+    <div class="character-card">
+      <div class="char-number">03 · الذنب</div>
+      <div class="char-name-ar">الماضي</div>
+      <div class="char-name-fr">Le Passé · الذي يجمعهم</div>
+      <p class="char-desc">
+        ليس شخصاً، لكنه حاضر في كل لحظة.
+        الذنب الذي يجمعهم، والسر الذي قد يفرقهم إلى الأبد.
+      </p>
+      <span class="char-trait">غامض · Mystérieux</span>
+    </div>
+  </div>
+</section>
+
+<!-- EXTRAITS -->
+<section id="extraits">
+  <div class="section-label">مقتطفات · Extraits</div>
+  <div class="section-title">كلمات من القصة</div>
+  <div class="section-title-fr">Des mots tirés de l'histoire</div>
+
+  <div class="extraits-list">
+    <div class="extrait-item">
+      <div class="extrait-num">01</div>
+      <div>
+        <div class="extrait-quote">
+          "كنت ظانة راهي عارفة كيفاش تحمي قلبها... حتى جاء هو."
+        </div>
+        <div class="extrait-source">أماني · Chapitre I</div>
+      </div>
+    </div>
+
+    <div class="extrait-item">
+      <div class="extrait-num">02</div>
+      <div>
+        <div class="extrait-quote">
+          "الذنب ما يمشيش، يبقى معاك كالظل — حتى في أحلك اللحظات."
+        </div>
+        <div class="extrait-source">من القصة · De l'histoire</div>
+      </div>
+    </div>
+
+    <div class="extrait-item">
+      <div class="extrait-num">03</div>
+      <div>
+        <div class="extrait-quote">
+          "واش الحب يقدر يعيش في عالم بني على الخيانة والدم؟"
+        </div>
+        <div class="extrait-source">أماني · Question sans réponse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="read">
+  <div style="position:relative;z-index:1;">
+    <div class="section-label" style="justify-content:center;text-align:center;">اقرأ الآن · Lire maintenant</div>
+    <div class="section-title" style="text-align:center;">مستعد لتعرف الحقيقة؟</div>
+    <div class="cta-border"></div>
+    <p class="cta-text">القصة كاملة على واتباد — مجاناً</p>
+    <a href="https://www.wattpad.com/story/398716838?utm_source=ios&utm_medium=link&utm_content=story_info&wp_page=story_details&wp_uname=mina__myss" target="_blank" class="btn-read">
+      <span>📖 ابدأ القراءة · Commencer à lire</span>
+    </a>
+  </div>
+</div>
+
+<!-- ===== INTERACTIONS ===== -->
+<div style="max-width:1100px;margin:0 auto;padding:4rem 2rem 8rem;">
+
+  <!-- REACTIONS -->
+  <div style="text-align:center;margin-bottom:5rem;">
+    <div class="section-label" style="justify-content:center;">ردود الفعل · Réactions</div>
+    <div class="section-title" style="text-align:center;margin-bottom:0.5rem;">ما رأيك في القصة؟</div>
+    <div class="section-title-fr" style="text-align:center;">Qu'est-ce que tu en penses ?</div>
+    <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-top:2rem;">
+      <div class="reaction-btn" data-type="love" onclick="addReaction('love')"><span style="font-size:2rem;">🖤</span><span style="font-family:'Noto Naskh Arabic',serif;font-size:0.85rem;color:var(--muted);">أحببتها</span><span class="r-count" id="count-love">0</span></div>
+      <div class="reaction-btn" data-type="fire" onclick="addReaction('fire')"><span style="font-size:2rem;">🔥</span><span style="font-family:'Noto Naskh Arabic',serif;font-size:0.85rem;color:var(--muted);">رائعة</span><span class="r-count" id="count-fire">0</span></div>
+      <div class="reaction-btn" data-type="cry" onclick="addReaction('cry')"><span style="font-size:2rem;">😭</span><span style="font-family:'Noto Naskh Arabic',serif;font-size:0.85rem;color:var(--muted);">بكيت</span><span class="r-count" id="count-cry">0</span></div>
+      <div class="reaction-btn" data-type="shocked" onclick="addReaction('shocked')"><span style="font-size:2rem;">😱</span><span style="font-family:'Noto Naskh Arabic',serif;font-size:0.85rem;color:var(--muted);">صدمني</span><span class="r-count" id="count-shocked">0</span></div>
+    </div>
+  </div>
+
+  <!-- COMMENTS -->
+  <div>
+    <div class="section-label">التعليقات · Commentaires</div>
+    <div class="section-title" style="margin-bottom:0.5rem;">اترك تعليقك</div>
+    <div class="section-title-fr">Laisse ton commentaire</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:2rem 0 1rem;">
+      <input id="comment-name" type="text" placeholder="اسمك · Ton prénom" style="background:var(--card);border:1px solid var(--border);color:var(--white);padding:1rem 1.2rem;font-family:'Noto Naskh Arabic',serif;font-size:1rem;outline:none;transition:border 0.3s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+      <input id="comment-email" type="email" placeholder="Email (optionnel)" style="background:var(--card);border:1px solid var(--border);color:var(--white);padding:1rem 1.2rem;font-family:'Cormorant Garamond',serif;font-size:1rem;outline:none;transition:border 0.3s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <textarea id="comment-message" rows="4" placeholder="رأيك في القصة... · Ton avis sur l'histoire..." style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--white);padding:1rem 1.2rem;font-family:'Noto Naskh Arabic',serif;font-size:1rem;outline:none;resize:vertical;transition:border 0.3s;margin-bottom:1rem;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    <button onclick="submitComment()" style="background:var(--gold);color:var(--black);border:none;padding:1rem 2.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='var(--red-glow)';this.style.color='var(--white)'" onmouseout="this.style.background='var(--gold)';this.style.color='var(--black)'">إرسال · Envoyer</button>
+    <div id="comment-msg" style="margin-top:1rem;font-family:'Noto Naskh Arabic',serif;font-size:0.9rem;opacity:0;transition:opacity 0.3s;"></div>
+    <div id="comments-list" style="margin-top:3rem;display:flex;flex-direction:column;gap:1.5rem;"></div>
+  </div>
+</div>
+
+<style>
+  .reaction-btn { display:flex;flex-direction:column;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);padding:1.5rem 2rem;cursor:pointer;transition:all 0.3s;min-width:100px; }
+  .reaction-btn:hover { border-color:var(--gold);transform:translateY(-4px); }
+  .reaction-btn.reacted { border-color:var(--gold);background:rgba(184,148,58,0.1); }
+  .r-count { font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold);font-weight:600; }
+  .comment-card { background:var(--card);border:1px solid var(--border);padding:1.5rem 2rem;position:relative; }
+  .comment-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0.3; }
+  .comment-name { font-family:'Noto Naskh Arabic',serif;font-size:1.1rem;color:var(--gold);margin-bottom:0.5rem; }
+  .comment-text { font-family:'Noto Naskh Arabic',serif;font-size:1rem;line-height:1.8;color:var(--muted);font-style:italic; }
+  .comment-date { font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;color:var(--border);margin-top:0.8rem; }
+</style>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">أمــاني الذِّئــب</div>
+  <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;margin-bottom:1rem;">
+    <a href="https://www.instagram.com/wattp__mina24?igsh=Z2h3NXJyMWZhZ3hn&utm_source=qr" target="_blank" style="color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;transition:opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      @wattp__mina24
+    </a>
+  </p>
+  <p class="footer-copy">© 2024 · All Rights Reserved · حقوق محفوظة</p>
+</footer>
+
+<script>
+  // Scroll reveal for extraits
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 150);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.extrait-item').forEach(el => observer.observe(el));
+</script>
+
+<!-- ===== SUPABASE BACKEND ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://ojqfymmztkjlgzcsvjdk.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_vvx0MQVaRkxBww4Nm98AuA_ACkxX6zC';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ===== REACTIONS =====
+  async function loadReactions() {
+    const { data } = await sb.from('reactions').select('*');
+    if (data) {
+      data.forEach(r => {
+        const el = document.getElementById('count-' + r.type);
+        if (el) el.textContent = r.count || 0;
+      });
+    }
+    const reacted = JSON.parse(localStorage.getItem('reacted') || '[]');
+    reacted.forEach(type => {
+      const btn = document.querySelector(`.reaction-btn[data-type="${type}"]`);
+      if (btn) btn.classList.add('reacted');
+    });
+  }
+
+  async function addReaction(type) {
+    const reacted = JSON.parse(localStorage.getItem('reacted') || '[]');
+    if (reacted.includes(type)) return;
+    const { data: existing } = await sb.from('reactions').select('*').eq('type', type).single();
+    if (existing) {
+      await sb.from('reactions').update({ count: (existing.count || 0) + 1 }).eq('type', type);
+    } else {
+      await sb.from('reactions').insert({ type, count: 1 });
+    }
+    reacted.push(type);
+    localStorage.setItem('reacted', JSON.stringify(reacted));
+    const btn = document.querySelector(`.reaction-btn[data-type="${type}"]`);
+    if (btn) btn.classList.add('reacted');
+    loadReactions();
+  }
+
+  // ===== COMMENTS =====
+  async function loadComments() {
+    const { data } = await sb.from('commentaires').select('*').order('created_at', { ascending: false }).limit(20);
+    const list = document.getElementById('comments-list');
+    if (!list) return;
+    list.innerHTML = '';
+    if (data && data.length > 0) {
+      data.forEach(c => {
+        const date = new Date(c.created_at).toLocaleDateString('ar-MA', { year: 'numeric', month: 'long', day: 'numeric' });
+        list.innerHTML += `
+          <div class="comment-card">
+            <div class="comment-name">${c.name || 'قارئ مجهول'}</div>
+            <div class="comment-text">${c.message}</div>
+            <div class="comment-date">${date}</div>
+          </div>`;
+      });
+    } else {
+      list.innerHTML = '<p style="color:var(--muted);font-style:italic;font-family:\'Noto Naskh Arabic\',serif;">كن أول من يعلق! · Sois le premier à commenter !</p>';
+    }
+  }
+
+  async function submitComment() {
+    const name = document.getElementById('comment-name').value.trim();
+    const message = document.getElementById('comment-message').value.trim();
+    const msg = document.getElementById('comment-msg');
+    if (!message) {
+      msg.textContent = '⚠️ اكتب تعليقك أولاً · Écris ton commentaire d\'abord';
+      msg.style.opacity = '1'; msg.style.color = 'var(--red-glow)';
+      return;
+    }
+    const { error } = await sb.from('commentaires').insert({ name: name || 'قارئ', message });
+    if (!error) {
+      document.getElementById('comment-name').value = '';
+      document.getElementById('comment-message').value = '';
+      msg.textContent = '✅ شكراً على تعليقك! · Merci pour ton commentaire !';
+      msg.style.opacity = '1'; msg.style.color = 'var(--gold)';
+      setTimeout(() => msg.style.opacity = '0', 3000);
+      loadComments();
+    } else {
+      msg.textContent = '❌ خطأ، حاول مجدداً · Erreur, réessaie';
+      msg.style.opacity = '1'; msg.style.color = 'var(--red-glow)';
+    }
+  }
+
+  loadReactions();
+  loadComments();
+</script>
+
+</body>
+</html>
